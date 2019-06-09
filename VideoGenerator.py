@@ -3,21 +3,9 @@ import cv2
 
 from utils import CFEVideoConf, image_resize
 
-#cap = cv2.VideoCapture(0)
-##save1_path = '/watermark.avi'    
-
-##cap = cv2.VideoCapture(save1_path)
-
-##save_path = 'watermark1.avi'
-##frames_per_seconds = 24
-##config = CFEVideoConf(cap, filepath=save_path, res='720p')
-##out = cv2.VideoWriter(save_path, config.video_type, frames_per_seconds, config.dims)
-
-##img_path = 'il_text.png'
-img_path = './il_text.png.png'
+img_path = './pil_text.png'
 logo = cv2.imread(img_path, -1)
-watermark = cv2.resize(logo, 10)
-
+logo = cv2.cvtColor(logo, cv2.COLOR_BGR2BGRA)
 
 import cv2
 cap = cv2.VideoCapture('watermark.avi')
@@ -25,19 +13,23 @@ count = 0
 while cap.isOpened():
     ret,frame = cap.read()
 
-    frame_h, frame_w, frame_c = frame.shape
-    overlay = np.zeros((frame_h, frame_w, 4), dtype='uint8')
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
+    rows,cols,channels = frame.shape
+
     watermark_h, watermark_w, watermark_c = logo.shape
+    # replace overlay pixels with watermark pixel values
+    overlay = np.zeros((rows, cols, 4), dtype='uint8')
     for i in range(0, watermark_h):
         for j in range(0, watermark_w):
-            if watermark[i,j][3] != 0:
+            if logo[i,j][3] != 0:
                 offset = 10
-                h_offset = frame_h - watermark_h - offset
-                w_offset = frame_w - watermark_w - offset
-                overlay[h_offset + i, w_offset+ j] = watermark[i,j]
+                h_offset = rows - watermark_h - offset
+                w_offset = cols - watermark_w - offset
+                overlay[h_offset + i, w_offset+ j] = logo[i,j]
 
+    cv2.addWeighted(overlay, 0.25, frame, 1.0, 0, frame)
     cv2.imshow('window-name',frame)
-    cv2.imwrite("frame%d.jpg" % count, frame)
+    ##cv2.imwrite("frame%d.jpg" % count, frame)
     count = count + 1
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
