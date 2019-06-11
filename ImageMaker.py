@@ -1,5 +1,4 @@
 import sys
-##import vlc
 import time
 import base64
 from PIL import Image, ImageDraw, ImageFont
@@ -18,10 +17,7 @@ def watchVideo(dir, uniqueCode):
 
     img.save('C:///Users/Christopher/source/repos/RampSoftware/pil_text.png')
 
-    #instance = vlc.MediaPlayer(fileLocation)
-    #instance.play()
-    #time.sleep(10)
-    #instance.stop()
+
 
 
 watchVideo(fileLocation, uniqueCode)
