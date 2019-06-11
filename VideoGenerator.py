@@ -1,14 +1,21 @@
 import numpy as np
 import cv2
+import re  
+import sys
+import os
 
 from utils import CFEVideoConf, image_resize
+
+user_input = input("Enter the path of your file: ")
+
+print(user_input)
 
 img_path = './pil_text.png'
 logo = cv2.imread(img_path, -1)
 logo = cv2.cvtColor(logo, cv2.COLOR_BGR2BGRA)
 
 import cv2
-cap = cv2.VideoCapture('BlackScreen.mp4')
+cap = cv2.VideoCapture(user_input)
 count = 0
 while cap.isOpened():
     ret,frame = cap.read()
@@ -27,7 +34,7 @@ while cap.isOpened():
     for i in range(0, watermark_h):
         for j in range(0, watermark_w):
             if logo[i,j][3] != 0:
-                offset = 10
+                offset = 50
                 h_offset = rows - watermark_h - offset
                 w_offset = cols - watermark_w - offset
                 overlay[h_offset + i, w_offset+ j] = logo[i,j]
