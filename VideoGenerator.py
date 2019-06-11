@@ -8,12 +8,17 @@ logo = cv2.imread(img_path, -1)
 logo = cv2.cvtColor(logo, cv2.COLOR_BGR2BGRA)
 
 import cv2
-cap = cv2.VideoCapture('watermark.avi')
+cap = cv2.VideoCapture('BlackScreen.mp4')
 count = 0
 while cap.isOpened():
     ret,frame = cap.read()
 
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
+    try:
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
+    except:
+        print("Video Over")
+        break
+
     rows,cols,channels = frame.shape
 
     watermark_h, watermark_w, watermark_c = logo.shape

@@ -17,9 +17,6 @@ def watchVideo(dir, uniqueCode):
 
     img.save('C:///Users/Christopher/source/repos/RampSoftware/pil_text.png')
 
-
-
-
 watchVideo(fileLocation, uniqueCode)
 
 print("done")
